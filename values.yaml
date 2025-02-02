@@ -1,0 +1,107 @@
+appName: example-app
+
+namespace: test
+
+# Service
+# ==================
+service:
+  namespace: # Optional; specify if different from the default
+  annotations: {}
+  port:
+    name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+# ==================
+
+# Deployment
+# =====================
+deployment:
+  namespace: # Optional;
+
+  replicaCount: 2
+
+  deploymentStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+  image:
+    registry: registry.example.com
+    repository: your-org/your-app
+    tag: v0.0.1
+    pullPolicy: IfNotPresent
+
+  imagePullSecrets:
+    name: registry-key
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 10
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+  securityContext: null
+
+  env:
+    - name: ENV_VAR
+      value: "your_value_here"
+# =====================
+
+# Horizontal pod autoscaler
+# ==============
+autoscaling:
+  namespace: # Optional;
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  cpu:
+    targetUtilization: 80
+  memory:
+    targetUtilization: 80
+# ==============
+
+# Ingress route
+# ==================
+ingressRoute:
+  enabled: true
+  namespace: traefik # Optional;
+  entryPoints:
+    - websecure  # Assuming HTTPS traffic
+  rules:
+    - host: your-app.example.com
+# ==================
+
+# Pod disruption budgetds
+# ==============
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+  maxUnavailable: null
+# ==============
+
+# Secrets
+# ==============
+secrets:
+  namespace: # Optional;
+  data:
+    secret1: "secretValue"
+    secret2: "anotherSecretValue"
+# ==============

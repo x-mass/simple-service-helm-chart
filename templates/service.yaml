@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mychart.fullname.service" . }}
+  namespace: {{ .Values.service.namespace | default .Values.namespace | default "default" }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    app: {{ .Values.appName }}
+  ports:
+    - name: {{ .Values.service.port.name }}
+      protocol: {{ default "TCP" .Values.service.port.protocol }}
+      port: {{ .Values.service.port.port }}
+      targetPort: {{ .Values.service.port.targetPort }}
