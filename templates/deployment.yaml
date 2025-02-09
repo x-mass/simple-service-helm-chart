@@ -44,7 +44,6 @@ spec:
           {{- if .Values.deployment.env }}
           env:
             {{- toYaml .Values.deployment.env | nindent 12 }}
-          {{- end }}
           envFrom:
             {{- if .Values.secrets.data }}
             - secretRef:
