@@ -4,6 +4,8 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "mychart.fullname.pdb" . }}
   namespace: {{ .Values.podDisruptionBudget.namespace | default .Values.namespace | default "default" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   {{- with .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ . }}

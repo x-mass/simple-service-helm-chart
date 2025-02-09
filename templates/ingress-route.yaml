@@ -4,6 +4,8 @@ kind: IngressRoute
 metadata:
   name: {{ default (include "mychart.fullname" .) .Values.ingressRoute.name }}
   namespace: {{ .Values.ingressRoute.namespace | default .Values.namespace | default "default" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   entryPoints:
     {{- toYaml .Values.ingressRoute.entryPoints | nindent 4 }}

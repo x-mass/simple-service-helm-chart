@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname.deployment" . }}
   namespace: {{ .Values.deployment.namespace | default .Values.namespace | default "default" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   replicas: {{ default 1 .Values.deployment.replicaCount }}
   selector:
@@ -43,6 +45,11 @@ spec:
           env:
             {{- toYaml .Values.deployment.env | nindent 12 }}
           {{- end }}
+          envFrom:
+            {{- if .Values.secrets.data }}
+            - secretRef:
+                name: {{ include "mychart.fullname" . }}-secrets
+            {{- end }}
       {{- with .Values.deployment.imagePullSecrets }}
       imagePullSecrets:
         - name: {{ .name }}

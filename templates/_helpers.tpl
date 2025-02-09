@@ -42,10 +42,10 @@ Create a default PDB name
 {{/*
 Common labels
 */}}
-{{- define "app.labels" -}}
+{{- define "common.labels" -}}
 app.kubernetes.io/name: {{ .Release.Name | quote }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
-app.kubernetes.io/version: {{ default .Chart.AppVersion .Values.image.tag | quote }}
+app.kubernetes.io/version: {{ default "latest" .Values.deployment.image.tag | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 {{- with .Values.additionalLabels }}
 {{- toYaml . | nindent 4 }}

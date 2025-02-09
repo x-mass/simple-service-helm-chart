@@ -4,6 +4,8 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "mychart.fullname.hpa" . }}
   namespace: {{ .Values.autoscaling.namespace | default .Values.namespace | default "default" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
