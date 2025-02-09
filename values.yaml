@@ -61,8 +61,7 @@ deployment:
   securityContext: null
 
   env:
-    - name: ENV_VAR
-      value: "your_value_here"
+    ENV_NAME: "your_value_here"
 # =====================
 
 # Horizontal pod autoscaler

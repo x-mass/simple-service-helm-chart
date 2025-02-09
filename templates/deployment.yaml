@@ -41,9 +41,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.deployment.env }}
           env:
-            {{- toYaml .Values.deployment.env | nindent 12 }}
+          {{- with .Values.deployment.env }}
+            {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
           envFrom:
             {{- if .Values.secrets.data }}
             - secretRef:
